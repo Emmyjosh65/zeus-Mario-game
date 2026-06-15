@@ -23,7 +23,7 @@ let player = {
 let gravity = 0.6;
 let score = 0;
 
-// WORLD (long map)
+// WORLD
 let platforms = [
   { x: 0, y: 380, w: 1000, h: 40 },
   { x: 200, y: 300, w: 120, h: 20 },
@@ -53,10 +53,24 @@ let keys = {};
 document.addEventListener("keydown", e => keys[e.code] = true);
 document.addEventListener("keyup", e => keys[e.code] = false);
 
-// MOBILE BUTTONS (optional if you add later)
-function moveLeft() { player.dx = -player.speed; }
-function moveRight() { player.dx = player.speed; }
-function stopMove() { player.dx = 0; }
+
+
+// ===========================
+// MOBILE BUTTON FUNCTIONS
+// ===========================
+
+function moveLeft() {
+  player.dx = -player.speed;
+}
+
+function moveRight() {
+  player.dx = player.speed;
+}
+
+function stopMove() {
+  player.dx = 0;
+}
+
 function jump() {
   if (player.onGround) {
     player.dy = player.jump;
@@ -64,21 +78,27 @@ function jump() {
   }
 }
 
-// UPDATE
+
+
+// ===========================
+// UPDATE GAME
+// ===========================
+
 function update() {
 
-  // keyboard
+  // KEYBOARD CONTROL
   if (keys["ArrowRight"]) player.dx = player.speed;
   else if (keys["ArrowLeft"]) player.dx = -player.speed;
   else player.dx = 0;
 
   if (keys["Space"]) jump();
 
+  // APPLY MOVEMENT
   player.dy += gravity;
   player.x += player.dx;
   player.y += player.dy;
 
-  // platforms collision
+  // PLATFORM COLLISION
   player.onGround = false;
   platforms.forEach(p => {
     if (
@@ -93,7 +113,7 @@ function update() {
     }
   });
 
-  // coins
+  // COINS
   coins.forEach(c => {
     if (!c.taken &&
       Math.hypot(player.x - c.x, player.y - c.y) < 25
@@ -103,11 +123,11 @@ function update() {
     }
   });
 
-  // enemy movement
+  // ENEMY MOVE
   enemy.x += enemy.dir * 2;
   if (enemy.x > 800 || enemy.x < 400) enemy.dir *= -1;
 
-  // enemy collision
+  // ENEMY COLLISION
   if (
     player.x < enemy.x + enemy.w &&
     player.x + player.w > enemy.x &&
@@ -121,24 +141,29 @@ function update() {
   cameraX = player.x - 150;
 }
 
-// DRAW
+
+
+// ===========================
+// DRAW GAME
+// ===========================
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // sky
+  // SKY
   ctx.fillStyle = "#87CEEB";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.save();
   ctx.translate(-cameraX, 0);
 
-  // platforms
+  // PLATFORMS
   ctx.fillStyle = "green";
   platforms.forEach(p => {
     ctx.fillRect(p.x, p.y, p.w, p.h);
   });
 
-  // coins
+  // COINS
   coins.forEach(c => {
     if (!c.taken) {
       ctx.fillStyle = "gold";
@@ -148,23 +173,28 @@ function draw() {
     }
   });
 
-  // enemy
+  // ENEMY
   ctx.fillStyle = "purple";
   ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
 
-  // player (replace later with image)
+  // PLAYER
   ctx.fillStyle = "red";
   ctx.fillRect(player.x, player.y, player.w, player.h);
 
   ctx.restore();
 
-  // UI
+  // SCORE UI
   ctx.fillStyle = "black";
   ctx.font = "20px Arial";
   ctx.fillText("Score: " + score, 20, 30);
 }
 
-// LOOP
+
+
+// ===========================
+// GAME LOOP
+// ===========================
+
 function loop() {
   update();
   draw();
