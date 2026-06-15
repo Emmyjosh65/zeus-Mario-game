@@ -3,11 +3,65 @@
 <head>
   <title>Mini Mario Game</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Mobile scaling fix -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <style>
+    /* BUTTON UI */
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    .btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 15px;
+      border: none;
+      font-size: 20px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      touch-action: none;
+    }
+
+    .btn:active {
+      background: rgba(0,0,0,0.8);
+    }
+  </style>
 </head>
+
 <body>
 
 <canvas id="gameCanvas"></canvas>
 
+<!-- MOBILE CONTROLS -->
+<div class="controls">
+  <button class="btn"
+    ontouchstart="moveLeft()"
+    ontouchend="stopMove()"
+    onmousedown="moveLeft()"
+    onmouseup="stopMove()"
+  >⬅</button>
+
+  <button class="btn"
+    ontouchstart="jump()"
+  >⬆</button>
+
+  <button class="btn"
+    ontouchstart="moveRight()"
+    ontouchend="stopMove()"
+    onmousedown="moveRight()"
+    onmouseup="stopMove()"
+  >➡</button>
+</div>
+
 <script src="main.js"></script>
+
 </body>
 </html>
