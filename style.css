@@ -1,11 +1,104 @@
-body {
+* {
   margin: 0;
-  background: #70c5ff;
-  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+
+  /* soft game background fallback */
+  background: linear-gradient(to bottom, #6ec6ff, #cfefff);
+}
+
+/* ================= CANVAS ================= */
 canvas {
   display: block;
-  margin: auto;
-  background: #87CEEB;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ================= START TEXT IMPROVEMENT ================= */
+.start-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 40%;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 2px 2px 5px rgba(255,255,255,0.6);
+}
+
+/* ================= MOBILE CONTROLS ================= */
+.controls {
+  position: fixed;
+  bottom: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* game buttons */
+.btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+
+  border: none;
+  outline: none;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  color: white;
+
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+
+  backdrop-filter: blur(6px);
+
+  transition: 0.15s ease;
+  touch-action: manipulation;
+}
+
+/* button press effect */
+.btn:active {
+  transform: scale(0.92);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* ================= UI TEXT (score etc) ================= */
+.ui {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  color: #000;
+  text-shadow: 1px 1px 2px white;
+
+  z-index: 5;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 600px) {
+  .btn {
+    width: 65px;
+    height: 65px;
+    font-size: 20px;
+  }
+
+  .ui {
+    font-size: 16px;
+  }
 }
