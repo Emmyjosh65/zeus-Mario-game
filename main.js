@@ -1,15 +1,14 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// ================= SIZE =================
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
-// ================= CAMERA =================
-let cameraX = 0;
 
 // ================= GAME STATE =================
 let gameStarted = false;
 let score = 0;
+let cameraX = 0;
 
 // ================= PLAYER =================
 let player = {
@@ -31,9 +30,12 @@ let keys = {};
 document.addEventListener("keydown", e => keys[e.code] = true);
 document.addEventListener("keyup", e => keys[e.code] = false);
 
-// tap to start (mobile safe)
-document.addEventListener("touchstart", () => gameStarted = true);
-document.addEventListener("click", () => gameStarted = true);
+// START GAME (click or touch)
+function startGame() {
+  gameStarted = true;
+}
+document.addEventListener("click", startGame);
+document.addEventListener("touchstart", startGame);
 
 // ================= MOBILE CONTROLS =================
 function moveLeft() { player.dx = -player.speed; }
@@ -46,18 +48,18 @@ function jump() {
   }
 }
 
-// ================= ASSETS (SAFE LOAD) =================
-function loadImage(src) {
-  const img = new Image();
+// ================= ASSETS =================
+function loadImg(src) {
+  let img = new Image();
   img.src = src;
   return img;
 }
 
-let playerImg = loadImage("assets/player.png");
-let coinImg = loadImage("assets/coin.png");
-let enemyImg = loadImage("assets/enemy.png");
-let bgImg = loadImage("assets/bg.png");
-let groundImg = loadImage("assets/ground.png");
+let bg = loadImg("assets/bg.png");
+let groundImg = loadImg("assets/ground.png");
+let playerImg = loadImg("assets/player.png");
+let enemyImg = loadImg("assets/enemy.png");
+let coinImg = loadImg("assets/coin.png");
 
 // ================= WORLD =================
 let platforms = [];
@@ -67,19 +69,22 @@ let flag;
 
 function loadLevel() {
 
+  // ground
   platforms = [
     { x: 0, y: 380, w: 2000, h: 40 }
   ];
 
+  // floating platforms
   for (let i = 200; i < 1800; i += 200) {
     platforms.push({
       x: i,
-      y: 300 - (Math.random() * 80),
+      y: 300,
       w: 120,
       h: 20
     });
   }
 
+  // coins
   coins = [];
   for (let i = 200; i < 1500; i += 150) {
     coins.push({
@@ -90,6 +95,7 @@ function loadLevel() {
     });
   }
 
+  // enemy
   enemy = {
     x: 600,
     y: 340,
@@ -98,6 +104,7 @@ function loadLevel() {
     dir: 1
   };
 
+  // flag (win point)
   flag = {
     x: 1800,
     y: 300,
@@ -125,7 +132,7 @@ function update() {
   player.x += player.dx;
   player.y += player.dy;
 
-  // platforms collision
+  // collision with platforms
   player.onGround = false;
   platforms.forEach(p => {
     if (
@@ -150,9 +157,9 @@ function update() {
 
   // enemy movement
   enemy.x += enemy.dir * 2;
-  if (enemy.x > 1600 || enemy.x < 500) enemy.dir *= -1;
+  if (enemy.x > 1600 || enemy.x < 400) enemy.dir *= -1;
 
-  // enemy collision
+  // enemy collision (restart)
   if (
     player.x < enemy.x + enemy.w &&
     player.x + player.w > enemy.x &&
@@ -168,42 +175,37 @@ function update() {
     location.reload();
   }
 
-  // camera
+  // camera follow
   cameraX = player.x - 150;
 }
 
 // ================= DRAW =================
 function draw() {
 
-  // BACKGROUND (image OR fallback)
-  if (bgImg.complete && bgImg.naturalWidth > 0) {
-    ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+  // background
+  if (bg.complete) {
+    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
   } else {
     ctx.fillStyle = "#87CEEB";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
-  // clouds (parallax feel)
-  ctx.fillStyle = "rgba(255,255,255,0.5)";
-  ctx.fillRect(100 - cameraX * 0.2, 80, 120, 40);
-  ctx.fillRect(400 - cameraX * 0.2, 120, 150, 50);
-
   if (!gameStarted) {
     ctx.fillStyle = "black";
     ctx.font = "30px Arial";
-    ctx.fillText("CLICK / TAP TO START", 180, 200);
+    ctx.fillText("CLICK / TAP TO START", 120, 200);
     return;
   }
 
   ctx.save();
   ctx.translate(-cameraX, 0);
 
-  // platforms (ground image OR fallback)
+  // platforms
   platforms.forEach(p => {
-    if (groundImg.complete && groundImg.naturalWidth > 0) {
+    if (groundImg.complete) {
       ctx.drawImage(groundImg, p.x, p.y, p.w, p.h);
     } else {
-      ctx.fillStyle = "#2ecc71";
+      ctx.fillStyle = "green";
       ctx.fillRect(p.x, p.y, p.w, p.h);
     }
   });
@@ -211,7 +213,7 @@ function draw() {
   // coins
   coins.forEach(c => {
     if (!c.taken) {
-      if (coinImg.complete && coinImg.naturalWidth > 0) {
+      if (coinImg.complete) {
         ctx.drawImage(coinImg, c.x, c.y, 20, 20);
       } else {
         ctx.fillStyle = "gold";
@@ -223,7 +225,7 @@ function draw() {
   });
 
   // enemy
-  if (enemyImg.complete && enemyImg.naturalWidth > 0) {
+  if (enemyImg.complete) {
     ctx.drawImage(enemyImg, enemy.x, enemy.y, enemy.w, enemy.h);
   } else {
     ctx.fillStyle = "purple";
@@ -237,7 +239,7 @@ function draw() {
   ctx.fillRect(flag.x, flag.y, flag.w, 20);
 
   // player
-  if (playerImg.complete && playerImg.naturalWidth > 0) {
+  if (playerImg.complete) {
     ctx.drawImage(playerImg, player.x, player.y, player.w, player.h);
   } else {
     ctx.fillStyle = "red";
