@@ -2,65 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-
-  <title>Mario Platformer V1</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Zeus Mario — Ultimate Edition</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- MOBILE BUTTON STYLE -->
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #70c5ff;
-    }
-
-    canvas {
-      display: block;
-    }
-
-    .controls {
-      position: fixed;
-      bottom: 20px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      z-index: 10;
-    }
-
-    .btn {
-      width: 70px;
-      height: 70px;
-      border-radius: 12px;
-      border: none;
-      font-size: 22px;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      touch-action: none;
-    }
-
-    .btn:active {
-      background: rgba(0,0,0,0.8);
-    }
-  </style>
 </head>
-
 <body>
 
-  <!-- GAME CANVAS -->
-  <canvas id="gameCanvas"></canvas>
+  <div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
 
-  <!-- MOBILE CONTROLS -->
-  <div class="controls">
-    <button class="btn" ontouchstart="moveLeft()" ontouchend="stopMove()">⬅</button>
-    <button class="btn" ontouchstart="jump()">⬆</button>
-    <button class="btn" ontouchstart="moveRight()" ontouchend="stopMove()">➡</button>
+    <!-- HUD -->
+    <div id="hud">
+      <div id="scoreDisplay">SCORE: 0</div>
+      <div id="coinDisplay">🪙 × 0</div>
+      <div id="livesDisplay">❤️ × 3</div>
+      <div id="levelDisplay">WORLD 1-1</div>
+      <div id="timeDisplay">⏱ 300</div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div id="menuOverlay">
+      <div id="menuBox">
+        <div id="menuLogo">ZEUS MARIO</div>
+        <div id="menuSub">ULTIMATE EDITION</div>
+        <div id="marioPreview"></div>
+        <button id="startBtn" class="menuBtn">▶ START GAME</button>
+        <button id="controlsBtn" class="menuBtn">🎮 CONTROLS</button>
+        <div id="controlsInfo" style="display:none;">
+          <p>⌨️ <strong>Arrow Keys</strong> — Move</p>
+          <p>⌨️ <strong>Space / Up</strong> — Jump</p>
+          <p>⌨️ <strong>Shift / Z</strong> — Run / Fire</p>
+          <p>⌨️ <strong>Down + Jump</strong> — Ground Pound</p>
+          <p>⌨️ <strong>P / Esc</strong> — Pause</p>
+          <p>📱 Touch controls auto-enabled on mobile</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause overlay (shown during pause) -->
+    <div id="pauseOverlay" style="display:none;">
+      <div id="pauseBox">
+        <h2>⏸ PAUSED</h2>
+        <p>Press P or ESC to resume</p>
+      </div>
+    </div>
+
+    <!-- Result Overlay (Game Over / Win) -->
+    <div id="resultOverlay" style="display:none;">
+      <div id="resultBox">
+        <h2 id="resultTitle"></h2>
+        <p id="resultSubtitle"></p>
+        <div id="resultStats">
+          <div class="statRow"><span>SCORE</span><span id="finalScore">0</span></div>
+          <div class="statRow"><span>COINS</span><span id="finalCoins">0</span></div>
+          <div class="statRow"><span>LEVELS</span><span id="finalLevels">0</span></div>
+        </div>
+        <button id="restartBtn" class="menuBtn">🔄 PLAY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div id="mobileControls">
+      <button class="ctrlBtn" id="btnLeft">◀</button>
+      <button class="ctrlBtn" id="btnDown">▼</button>
+      <button class="ctrlBtn" id="btnJump">▲</button>
+      <button class="ctrlBtn" id="btnRight">▶</button>
+      <button class="ctrlBtn" id="btnRun">⚡</button>
+    </div>
+
+    <!-- Notification toast -->
+    <div id="toast"></div>
   </div>
 
-  <!-- GAME SCRIPT -->
   <script src="main.js"></script>
-
 </body>
 </html>
