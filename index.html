@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Zeus Mario — Ultimate Edition</title>
+  <title>Zeus Mario — Ultimate Premium</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -24,16 +24,16 @@
     <div id="menuOverlay">
       <div id="menuBox">
         <div id="menuLogo">ZEUS MARIO</div>
-        <div id="menuSub">ULTIMATE EDITION</div>
+        <div id="menuSub">ULTIMATE PREMIUM</div>
         <button id="startBtn" class="menuBtn">▶ START GAME</button>
         <button id="controlsBtn" class="menuBtn">🎮 CONTROLS</button>
         <div id="controlsInfo" style="display:none;">
-          <p>⌨️ Arrow Keys — Move</p>
-          <p>⌨️ Space / Up — Jump</p>
-          <p>⌨️ Shift / Z — Run / Fire</p>
+          <p>⌨️ Arrow Keys — Move / Jump</p>
+          <p>⌨️ Shift — Run</p>
           <p>⌨️ Down + Jump — Ground Pound</p>
+          <p>⌨️ X / F — Shoot Fire</p>
           <p>⌨️ P / Esc — Pause</p>
-          <p>📱 Touch: buttons at bottom of screen</p>
+          <p>📱 Touch: Left ◀  |  ▲ Jump  |  Right ▶</p>
         </div>
       </div>
     </div>
@@ -60,13 +60,11 @@
       </div>
     </div>
 
-    <!-- Mobile Controls — MOVED UP -->
+    <!-- Mobile Controls — 3 buttons only, spaced -->
     <div id="mobileControls">
       <button class="ctrlBtn" id="btnLeft">◀</button>
-      <button class="ctrlBtn" id="btnDown">▼</button>
-      <button class="ctrlBtn" id="btnJump">▲</button>
+      <button class="ctrlBtn jumpBtn" id="btnJump">▲</button>
       <button class="ctrlBtn" id="btnRight">▶</button>
-      <button class="ctrlBtn" id="btnRun">⚡</button>
     </div>
 
     <!-- Toast -->
